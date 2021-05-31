@@ -3,6 +3,10 @@ let myLibrary = [];
 
 //global DOM variables
 const bookListTable = document.getElementById('bookList');
+const newBookForm = document.getElementById('newBookForm');
+
+//event listeners
+newBookForm.addEventListener('submit', addBookToMyLibrary);
 
 //book object constructor function
 //this creates a 'book' object that has title, author, pages, and read status (boolean) keys.
@@ -29,8 +33,17 @@ Book.prototype.info = function() {
   return `${this.title} by ${this.author}, ${this.pages} pages, ${readStatus}`
 }
 
-function addBookToMyLibrary() {
+//function that runs after form submit and adds book to myLibrary array
+function addBookToMyLibrary(e) {
+  e.preventDefault();
   //get form data
+  const bookTitleInput = document.querySelector('#bookTitleInput');
+  const bookAuthorInput = document.querySelector('#bookAuthorInput');
+  const bookPagesInput = document.querySelector('#bookPagesInput');
+  const bookStatusInput = document.querySelectorAll('input[name="status"]');
+  if(bookStatusInput[0].checked === true) {
+    console.log(bookStatusInput[0].value);
+  }
   //create new Book object with constructor Book()
   //push object to myLibrary array
   //run populateBookList()
@@ -60,7 +73,7 @@ function populateBookList() {
     authorTd.textContent = book.author;
     pagesTd.textContent = book.pages;
     statusTd.textContent = book.status;
-    //append table data to row, then row to table
+    //append table data to row, then append row to table
     tableRow.append(titleTd, authorTd, pagesTd, statusTd);
     bookListTable.appendChild(tableRow);
   });
