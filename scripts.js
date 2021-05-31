@@ -40,20 +40,30 @@ function addBookToMyLibrary() {
 //add book to test app before user interface is complete
 const bookTest = new Book('War and Peace', 'Leo Tolstoy', 1225, false);
 myLibrary.push(bookTest);
+const bookTest2 = new Book('Wuthering Heights', 'Emily Bronte', 450, false);
+myLibrary.push(bookTest2);
+
 
 //this function should populate the list of books on page load. makes sense to have this if there is persistant data of some type. otherwise it would not do anything if data goes away on page exit.
 function populateBookList() {
-  //iterate through array
+  //iterate through array and update the DOM
   myLibrary.forEach(book => {
-    //create table row
+    //create table row for book
     const tableRow = document.createElement('tr');
-    //create table data
-    const tableData = document.createElement('td');
-    tableData.textContent = book;
-    tableRow.appendChild(tableData);
+    //create table data elements for title, author, # of pages, status
+    const titleTd = document.createElement('td');
+    const authorTd = document.createElement('td');
+    const pagesTd = document.createElement('td');
+    const statusTd = document.createElement('td');
+    //assign object proerty values to node text content
+    titleTd.textContent = book.title;
+    authorTd.textContent = book.author;
+    pagesTd.textContent = book.pages;
+    statusTd.textContent = book.status;
+    //append table data to row, then row to table
+    tableRow.append(titleTd, authorTd, pagesTd, statusTd);
     bookListTable.appendChild(tableRow);
   });
-  //and update the DOM 
 }
 
 populateBookList();
