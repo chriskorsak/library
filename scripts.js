@@ -7,7 +7,6 @@ const newBookForm = document.getElementById('newBookForm');
 
 //event listeners
 newBookForm.addEventListener('submit', addBookToMyLibrary);
-bookListTable.addEventListener('click', changeReadStatus);
 
 //book object constructor function
 function Book(title, author = 'unknown author', pages, status = false) {
@@ -27,7 +26,7 @@ Book.prototype.info = function() {
 }
 
 //method to toggle read status of a book object
-Book.prototype.read = function() {
+Book.prototype.readStatus = function() {
   if (this.status === true) {
     this.status = false;
   } else {
@@ -42,7 +41,6 @@ function addBookToMyLibrary(e) {
   const bookTitleInput = document.querySelector('#bookTitleInput');
   const bookAuthorInput = document.querySelector('#bookAuthorInput');
   const bookPagesInput = document.querySelector('#bookPagesInput');
-  
   //logic to figure out which radio button is clicked for read status
   const bookStatusInput = document.querySelectorAll('input[name="status"]');
   let status = false;
@@ -58,8 +56,6 @@ function addBookToMyLibrary(e) {
   //add new book to table
   addBookToTable(newBook);
   //clear out form for another entry
-  console.log(bookTitleInput);
-
   bookTitleInput.value = '';
   bookAuthorInput.value = '';
   bookPagesInput.value = '';
@@ -76,41 +72,51 @@ function populateBookList() {
 }
 
 function addBookToTable(book) {
-      //create table row for book
-      const tableRow = document.createElement('tr');
-      //create table data elements for title, author, # of pages, status
-      const titleTd = document.createElement('td');
-      const authorTd = document.createElement('td');
-      const pagesTd = document.createElement('td');
-      const statusTd = document.createElement('td');
-      const deleteTd = document.createElement('td');
-      //create toggle read status and delete buttons for book
-      const toggleReadButton = document.createElement('button');
-      const deleteButton = document.createElement('button');
-      toggleReadButton.textContent = book.info();
-      deleteButton.textContent = 'Delete';
-      //populate table data with book info
-      titleTd.textContent = book.title;
-      authorTd.textContent = book.author;
-      pagesTd.textContent = book.pages;
-      statusTd.appendChild(toggleReadButton);
-      deleteTd.appendChild(deleteButton);
-      //append table data to row, then append row to table
-      tableRow.append(titleTd, authorTd, pagesTd, statusTd, deleteTd);
-      bookListTable.appendChild(tableRow);  
+  //create table row for book
+  const tableRow = document.createElement('tr');
+  //create table data elements for title, author, # of pages, status
+  const titleTd = document.createElement('td');
+  const authorTd = document.createElement('td');
+  const pagesTd = document.createElement('td');
+  const statusTd = document.createElement('td');
+  const deleteTd = document.createElement('td');
+  //create toggle read status and delete buttons for book
+  const toggleReadButton = document.createElement('button');
+  toggleReadButton.addEventListener('click', changeReadStatus);
+  const deleteButton = document.createElement('button');
+  toggleReadButton.textContent = book.info();
+  toggleReadButton.classList.add('read-status');
+  deleteButton.textContent = 'Delete';
+  //populate table data with book info
+  titleTd.textContent = book.title;
+  authorTd.textContent = book.author;
+  pagesTd.textContent = book.pages;
+  statusTd.appendChild(toggleReadButton);
+  deleteTd.appendChild(deleteButton);
+  //append table data to row, then append row to table
+  tableRow.append(titleTd, authorTd, pagesTd, statusTd, deleteTd);
+  bookListTable.appendChild(tableRow);  
 }
 
 function changeReadStatus(e) {
-  if (e.target.textContent === "not read yet") {
-    console.log(e);
-  }
+  //get get title of book by traversing DOM
+  const title = e.target.parentElement.parentElement.firstElementChild.textContent;
+  //filter array down to array with matching book title
+  const filteredBookArray = myLibrary.filter(book => book.title === title);
+  // run read status method to change status
+  filteredBookArray[0].readStatus();
 }
 
 //add book to test app before user interface is complete
-const bookTest = new Book('War and Peace', 'Leo Tolstoy', 1225, false);
+const bookTest = new Book('tar and Peace', 'Leo Tolstoy', 1225, false);
 myLibrary.push(bookTest);
-const bookTest2 = new Book('Wuthering Heights', 'Emily Bronte', 450, true);
+const bookTest2 = new Book('zar and Peace', 'Leo Tolstoy', 1225, false);
 myLibrary.push(bookTest2);
+const bookTest3 = new Book('bar and Peace', 'Leo Tolstoy', 1225, false);
+myLibrary.push(bookTest3);
+const bookTest4 = new Book('far and Peace', 'Leo Tolstoy', 1225, false);
+myLibrary.push(bookTest4);
+
 
 populateBookList();
 
