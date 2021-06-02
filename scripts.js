@@ -7,6 +7,7 @@ const newBookForm = document.getElementById('newBookForm');
 
 //event listeners
 newBookForm.addEventListener('submit', addBookToMyLibrary);
+bookListTable.addEventListener('click', changeReadStatus);
 
 //book object constructor function
 function Book(title, author = 'unknown author', pages, status = false) {
@@ -38,21 +39,27 @@ Book.prototype.read = function() {
 function addBookToMyLibrary(e) {
   e.preventDefault();
   //get form data
-  const bookTitleInput = document.querySelector('#bookTitleInput').value;
-  const bookAuthorInput = document.querySelector('#bookAuthorInput').value;
-  const bookPagesInput = document.querySelector('#bookPagesInput').value;
+  const bookTitleInput = document.querySelector('#bookTitleInput');
+  const bookAuthorInput = document.querySelector('#bookAuthorInput');
+  const bookPagesInput = document.querySelector('#bookPagesInput');
+  
+  //logic to figure out which radio button is clicked for read status
   const bookStatusInput = document.querySelectorAll('input[name="status"]');
   let status = false;
   if(bookStatusInput[0].checked === true) {
     status = true;
   }
+  //end get form data
+
   //create new Book object with constructor Book()
-  const newBook = new Book(bookTitleInput, bookAuthorInput, bookPagesInput, status);
+  const newBook = new Book(bookTitleInput.value, bookAuthorInput.value, bookPagesInput.value, status);
   //push object to myLibrary array
   myLibrary.push(newBook);
   //add new book to table
   addBookToTable(newBook);
   //clear out form for another entry
+  console.log(bookTitleInput);
+
   bookTitleInput.value = '';
   bookAuthorInput.value = '';
   bookPagesInput.value = '';
@@ -76,20 +83,33 @@ function addBookToTable(book) {
       const authorTd = document.createElement('td');
       const pagesTd = document.createElement('td');
       const statusTd = document.createElement('td');
-      //assign object proerty values to node text content
+      const deleteTd = document.createElement('td');
+      //create toggle read status and delete buttons for book
+      const toggleReadButton = document.createElement('button');
+      const deleteButton = document.createElement('button');
+      toggleReadButton.textContent = book.info();
+      deleteButton.textContent = 'Delete';
+      //populate table data with book info
       titleTd.textContent = book.title;
       authorTd.textContent = book.author;
       pagesTd.textContent = book.pages;
-      statusTd.textContent = book.info();
+      statusTd.appendChild(toggleReadButton);
+      deleteTd.appendChild(deleteButton);
       //append table data to row, then append row to table
-      tableRow.append(titleTd, authorTd, pagesTd, statusTd);
+      tableRow.append(titleTd, authorTd, pagesTd, statusTd, deleteTd);
       bookListTable.appendChild(tableRow);  
+}
+
+function changeReadStatus(e) {
+  if (e.target.textContent === "not read yet") {
+    console.log(e);
+  }
 }
 
 //add book to test app before user interface is complete
 const bookTest = new Book('War and Peace', 'Leo Tolstoy', 1225, false);
 myLibrary.push(bookTest);
-const bookTest2 = new Book('Wuthering Heights', 'Emily Bronte', 450, false);
+const bookTest2 = new Book('Wuthering Heights', 'Emily Bronte', 450, true);
 myLibrary.push(bookTest2);
 
 populateBookList();
