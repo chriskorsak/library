@@ -16,12 +16,22 @@ function Book(title, author = 'unknown author', pages, status = false) {
   this.status = status;
 }
 //Book prototype object method to be shared with all Book objects
+//turns read-status boolean into user-friendly message
 Book.prototype.info = function() {
   let readStatus = 'not read yet';
   if (this.status) {
     readStatus = 'read'
   }
   return readStatus;
+}
+
+//method to toggle read status of a book object
+Book.prototype.read = function() {
+  if (this.status === true) {
+    this.status = false;
+  } else {
+    this.status = true;
+  }
 }
 
 //function that runs after form submit and adds book to myLibrary array
