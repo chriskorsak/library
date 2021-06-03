@@ -1,15 +1,24 @@
 //stores all book objects
 let myLibrary = [];
 
+//check local storage
+if(!localStorage.getItem('library')) {
+  addToLocalStorage();
+} else {
+  pullFromLocalStorage();
+}
+
 //global DOM variables
 const bookListTable = document.getElementById('bookList');
 const newBookForm = document.getElementById('newBookForm');
 
-//event listeners
+//submit form event listener
 newBookForm.addEventListener('submit', addBookToMyLibrary);
 
+//FUNCTIONS
+
 //book object constructor function
-function Book(title, author = 'unknown author', pages, status = false) {
+function Book(title, author, pages, status) {
   this.title = title;
   this.author = author;
   this.pages = pages;
@@ -41,10 +50,10 @@ function addBookToMyLibrary(e) {
   const bookTitleInput = document.querySelector('#bookTitleInput');
   const bookAuthorInput = document.querySelector('#bookAuthorInput');
   const bookPagesInput = document.querySelector('#bookPagesInput');
-  //logic to figure out which radio button is clicked for read status
-  const bookStatusInput = document.querySelectorAll('input[name="status"]');
+  //radio button for read/unread
+  const bookStatusInput = document.querySelector('input[name="status"]');
   let status = false;
-  if(bookStatusInput[0].checked === true) {
+  if(bookStatusInput.checked === true) {
     status = true;
   }
   //end get form data
@@ -94,7 +103,6 @@ function addBookToTable(book, index) {
   //create toggle read status button
   const toggleReadButton = document.createElement('button');
   toggleReadButton.addEventListener('click', changeReadStatus);
-  // toggleReadButton.textContent = book.info();
   toggleReadButton.textContent = Book.prototype.info.call(book);
   toggleReadButton.classList.add('read-status');
   //create delete button for book
@@ -146,11 +154,6 @@ function pullFromLocalStorage() {
   myLibrary = JSON.parse(localStorage.getItem('library'));
 }
 
-if(!localStorage.getItem('library')) {
-  addToLocalStorage();
-} else {
-  pullFromLocalStorage();
-}
 //run functions on initial page load
 populateBookList();
 
