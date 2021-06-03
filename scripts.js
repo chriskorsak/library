@@ -53,8 +53,10 @@ function addBookToMyLibrary(e) {
   const newBook = new Book(bookTitleInput.value, bookAuthorInput.value, bookPagesInput.value, status);
   //push object to myLibrary array
   myLibrary.push(newBook);
+  //get array index val of new book for data-id val in DOM
+  const index = myLibrary.length - 1;
   //add new book to table
-  addBookToTable(newBook);
+  addBookToTable(newBook, index);
   //clear out form for another entry
   bookTitleInput.value = '';
   bookAuthorInput.value = '';
@@ -101,25 +103,18 @@ function addBookToTable(book, index) {
 }
 
 function changeReadStatus(e) {
-  //get get title of book by traversing DOM
-  const title = e.target.parentElement.parentElement.firstElementChild.textContent;
-  //filter array down to array with matching book title
-  const filteredBookArray = myLibrary.filter(book => book.title === title);
+  //get get data-id of <tr> book by traversing DOM
+  const id = e.target.parentElement.parentElement.getAttribute('data-id');
+  const book = myLibrary[id];
   // run read status method to change status
-  filteredBookArray[0].readStatus();
-  //update button text
-  e.target.textContent = filteredBookArray[0].info();
+  book.readStatus();
+  // //update button text
+  e.target.textContent = book.info();
 }
 
 //add book to test app before user interface is complete
-const bookTest = new Book('tar and Peace', 'Leo Tolstoy', 1225, false);
+const bookTest = new Book('War and Peace', 'Leo Tolstoy', 1225, false);
 myLibrary.push(bookTest);
-const bookTest2 = new Book('zar and Peace', 'Leo Tolstoy', 1225, false);
-myLibrary.push(bookTest2);
-const bookTest3 = new Book('bar and Peace', 'Leo Tolstoy', 1225, false);
-myLibrary.push(bookTest3);
-const bookTest4 = new Book('far and Peace', 'Leo Tolstoy', 1225, false);
-myLibrary.push(bookTest4);
 
 
 populateBookList();
