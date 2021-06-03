@@ -34,15 +34,6 @@ Book.prototype.readStatus = function() {
   }
 }
 
-//saves myLibrary to local storage
-function lookForLocalStorage() {
-  if (!localStorage.getItem('myLibrary')) {
-    localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
-  } else {
-      myLibrary = JSON.parse(localStorage.getItem('myLibrary'));
-  }
-}
-
 //function that runs after form submit and adds book to myLibrary array
 function addBookToMyLibrary(e) {
   e.preventDefault();
@@ -62,7 +53,8 @@ function addBookToMyLibrary(e) {
   const newBook = new Book(bookTitleInput.value, bookAuthorInput.value, bookPagesInput.value, status);
   //push object to myLibrary array
   myLibrary.push(newBook);
-  localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+  //save library to local storage
+  addToLocalStorage();
 
   //get array index val of new book for data-id val in DOM
   const index = myLibrary.length - 1;
@@ -90,8 +82,6 @@ function populateBookList() {
 }
 
 function addBookToTable(book, index) {
-  console.log(book);
-
   //create table row for book set data attribute of tr to array index value of book
   const tableRow = document.createElement('tr');
   tableRow.setAttribute('data-id', index);
@@ -104,7 +94,8 @@ function addBookToTable(book, index) {
   //create toggle read status button
   const toggleReadButton = document.createElement('button');
   toggleReadButton.addEventListener('click', changeReadStatus);
-  toggleReadButton.textContent = book.info();
+  // toggleReadButton.textContent = book.info();
+  toggleReadButton.textContent = Book.prototype.info.call(book);
   toggleReadButton.classList.add('read-status');
   //create delete button for book
   const deleteButton = document.createElement('button');
@@ -119,7 +110,8 @@ function addBookToTable(book, index) {
   deleteTd.appendChild(deleteButton);
   //append table data to row, then append row to table
   tableRow.append(titleTd, authorTd, pagesTd, statusTd, deleteTd);
-  bookListTable.appendChild(tableRow);  
+  bookListTable.appendChild(tableRow);
+
 }
 
 function changeReadStatus(e) {
@@ -127,9 +119,11 @@ function changeReadStatus(e) {
   const id = e.target.parentElement.parentElement.getAttribute('data-id');
   const book = myLibrary[id];
   // run read status method to change status
-  book.readStatus();
+  Book.prototype.readStatus.call(book);
   // //update button text
-  e.target.textContent = book.info();
+  e.target.textContent = Book.prototype.info.call(book);
+  //save to local storage
+  addToLocalStorage();
 }
 
 function deleteBook(e) {
@@ -138,11 +132,25 @@ function deleteBook(e) {
   const id = tr.getAttribute('data-id');
   // remove object from array
   myLibrary.splice(id, 1);
+  // save to local storage
+  addToLocalStorage();
   //remove table row from dom
   populateBookList();
 }
 
+function addToLocalStorage() {
+  localStorage.setItem('library', JSON.stringify(myLibrary));
+}
+
+function pullFromLocalStorage() {
+  myLibrary = JSON.parse(localStorage.getItem('library'));
+}
+
+if(!localStorage.getItem('library')) {
+  addToLocalStorage();
+} else {
+  pullFromLocalStorage();
+}
 //run functions on initial page load
-lookForLocalStorage();
 populateBookList();
 
