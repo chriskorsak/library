@@ -34,6 +34,15 @@ Book.prototype.readStatus = function() {
   }
 }
 
+//saves myLibrary to local storage
+function lookForLocalStorage() {
+  if (!localStorage.getItem('myLibrary')) {
+    localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+  } else {
+      myLibrary = JSON.parse(localStorage.getItem('myLibrary'));
+  }
+}
+
 //function that runs after form submit and adds book to myLibrary array
 function addBookToMyLibrary(e) {
   e.preventDefault();
@@ -53,6 +62,8 @@ function addBookToMyLibrary(e) {
   const newBook = new Book(bookTitleInput.value, bookAuthorInput.value, bookPagesInput.value, status);
   //push object to myLibrary array
   myLibrary.push(newBook);
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+
   //get array index val of new book for data-id val in DOM
   const index = myLibrary.length - 1;
   //add new book to table
@@ -79,6 +90,8 @@ function populateBookList() {
 }
 
 function addBookToTable(book, index) {
+  console.log(book);
+
   //create table row for book set data attribute of tr to array index value of book
   const tableRow = document.createElement('tr');
   tableRow.setAttribute('data-id', index);
@@ -129,10 +142,7 @@ function deleteBook(e) {
   populateBookList();
 }
 
-//add book to test app before user interface is complete
-const bookTest = new Book('War and Peace', 'Leo Tolstoy', 1225, false);
-myLibrary.push(bookTest);
-
-
+//run functions on initial page load
+lookForLocalStorage();
 populateBookList();
 
