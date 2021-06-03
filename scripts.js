@@ -65,8 +65,12 @@ function addBookToMyLibrary(e) {
   bookStatusInput[1].checked = false;
 }
 
-//this function should populate the list of books on page load. makes sense to have this if there is persistant data of some type. otherwise it would not do anything if data goes away on page exit.
+//this function should populate the list of books on page load or after deleting a book
 function populateBookList() {
+  //clear out book list if not the first load
+  if (bookListTable != undefined) {
+    bookListTable.innerHTML = '';
+  }
   //iterate through array and add book to table
   //index is used as data value for table row of book for id
   myLibrary.forEach((book, index) => {
@@ -84,13 +88,16 @@ function addBookToTable(book, index) {
   const pagesTd = document.createElement('td');
   const statusTd = document.createElement('td');
   const deleteTd = document.createElement('td');
-  //create toggle read status and delete buttons for book
+  //create toggle read status button
   const toggleReadButton = document.createElement('button');
   toggleReadButton.addEventListener('click', changeReadStatus);
-  const deleteButton = document.createElement('button');
   toggleReadButton.textContent = book.info();
   toggleReadButton.classList.add('read-status');
+  //create delete button for book
+  const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
+  deleteButton.addEventListener('click', deleteBook);
+
   //populate table data with book info
   titleTd.textContent = book.title;
   authorTd.textContent = book.author;
@@ -110,6 +117,16 @@ function changeReadStatus(e) {
   book.readStatus();
   // //update button text
   e.target.textContent = book.info();
+}
+
+function deleteBook(e) {
+  //get get data-id of <tr> book by traversing DOM
+  const tr = e.target.parentElement.parentElement;
+  const id = tr.getAttribute('data-id');
+  // remove object from array
+  myLibrary.splice(id, 1);
+  //remove table row from dom
+  populateBookList();
 }
 
 //add book to test app before user interface is complete
