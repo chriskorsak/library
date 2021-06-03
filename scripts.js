@@ -65,15 +65,17 @@ function addBookToMyLibrary(e) {
 
 //this function should populate the list of books on page load. makes sense to have this if there is persistant data of some type. otherwise it would not do anything if data goes away on page exit.
 function populateBookList() {
-  //iterate through array and update the DOM
-  myLibrary.forEach(book => {
-    addBookToTable(book);
+  //iterate through array and add book to table
+  //index is used as data value for table row of book for id
+  myLibrary.forEach((book, index) => {
+    addBookToTable(book, index);
   });
 }
 
-function addBookToTable(book) {
-  //create table row for book
+function addBookToTable(book, index) {
+  //create table row for book set data attribute of tr to array index value of book
   const tableRow = document.createElement('tr');
+  tableRow.setAttribute('data-id', index);
   //create table data elements for title, author, # of pages, status
   const titleTd = document.createElement('td');
   const authorTd = document.createElement('td');
@@ -105,6 +107,8 @@ function changeReadStatus(e) {
   const filteredBookArray = myLibrary.filter(book => book.title === title);
   // run read status method to change status
   filteredBookArray[0].readStatus();
+  //update button text
+  e.target.textContent = filteredBookArray[0].info();
 }
 
 //add book to test app before user interface is complete
