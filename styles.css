@@ -1,3 +1,115 @@
-table {
-  width: 80%;
+/* global styles */
+
+:root {
+  /* color */
+  --main-color: #38687A;
+  --accent-color-1: #73D4E6;
+  --accent-color-2: #1B323B;
+  --text-color-light: #fff;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  /* border: 1px solid black; */
+}
+*:focus,
+*:active {
+  outline: none !important;
+}
+
+header,
+main,
+form,
+h1,
+h2,
+h3 {
+  padding: 1%;
+}
+
+/* page section styles */
+
+header {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  background-color: var(--main-color);
+  color: var(--accent-color-1);
+}
+
+main {
+  min-height: 100vh;
+}
+
+/* element styles */
+h1 {
+  font-size: 3em;
+}
+
+/* new book form styles begin */
+
+#newBookForm {
+  margin-bottom: 30px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input {
+  padding: 7px;
+  border-radius: 5px;
+  font-size: 16px;
+  border: 1px solid #444;
+}
+
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  margin: 1% 0%;
+}
+
+.form-group input[type=text],
+.form-group input[type=number] {
+  flex: 1;
+  max-width: 70%;
+}
+.form-group input[type=text]:focus,
+.form-group input[type=number]:focus {
+  box-shadow:0 0 6px 4px rgba(0,0,0,0.15);
+
+}
+
+input[type=submit] {
+  background-color: var(--main-color);
+  color: var(--text-color-light);
+}
+
+input[type=submit]:hover {
+  background-color: var(--accent-color-2);
+}
+
+/* new book form styles end */
+
+/* book-list table styles start */
+
+table {
+  width: 100%;
+}
+thead {
+  margin-bottom: 10px;
+}
+
+th {
+  text-align: left;
+}
+
+
+button {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+/* book-list table styles end */
