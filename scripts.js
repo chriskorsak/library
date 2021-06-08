@@ -51,9 +51,9 @@ function addBookToMyLibrary(e) {
   const bookAuthorInput = document.querySelector('#bookAuthorInput');
   const bookPagesInput = document.querySelector('#bookPagesInput');
   //radio button for read/unread
-  const bookStatusInput = document.querySelector('input[name="status"]');
+  const bookStatusInput = document.querySelectorAll('input[name="status"]');
   let status = false;
-  if(bookStatusInput.checked === true) {
+  if(bookStatusInput[0].checked === true) {
     status = true;
   }
   //end get form data
@@ -104,6 +104,8 @@ function addBookToTable(book, index) {
   const toggleReadButton = document.createElement('button');
   toggleReadButton.addEventListener('click', changeReadStatus);
   toggleReadButton.textContent = Book.prototype.info.call(book);
+  //set button color based on read status
+  setButtonColor(toggleReadButton);
   toggleReadButton.classList.add('read-status');
   //create delete button for book
   const deleteButton = document.createElement('button');
@@ -130,8 +132,20 @@ function changeReadStatus(e) {
   Book.prototype.readStatus.call(book);
   // //update button text
   e.target.textContent = Book.prototype.info.call(book);
+  //set button color
+  setButtonColor(e.target);
   //save to local storage
   addToLocalStorage();
+}
+
+function setButtonColor(button) {
+  //set button color
+  console.log(button);
+  if (button.textContent === 'Unread') {
+    button.classList.add('read-status-button');
+  } else {
+    button.classList.remove('read-status-button');
+  }
 }
 
 function deleteBook(e) {
