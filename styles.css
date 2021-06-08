@@ -6,6 +6,7 @@
   --accent-color-1: #73D4E6;
   --accent-color-2: #1B323B;
   --text-color-light: #fff;
+  --read-status-unread: #5eb0cd;
 }
 
 * {
@@ -100,13 +101,26 @@ input[type=submit]:hover {
 /* new book form styles end */
 
 /* book-list table styles start */
-
+table {
+  border-collapse: collapse;
+}
 tr {
   margin-bottom: 30px;
-  padding: 10px;
+  padding: 5px;
+  border: none;
   border-radius: 5px;
-  border: 1px solid var(--accent-color-2);
-  border-collapse: collapse;
+}
+th,
+td {
+  padding: 5px;
+}
+
+tr:nth-of-type(odd) {
+  background-color: #eee;
+}
+
+thead > tr {
+  background-color: transparent !important;
 }
 
 button {
@@ -116,8 +130,11 @@ button {
   color: var(--text-color-light);
   border: 1px solid #444;
   min-width: 70px;
-  margin-bottom: 5px;
+}
 
+/* this class is toggled when user changes read status for a book object */
+.read-status-button {
+  background-color: var(--read-status-unread);
 }
 
 /* book-list table styles end */
@@ -151,6 +168,7 @@ button {
     /* Behave  like a "row" */
     position: relative !important;
     padding-left: 25% !important;
+    padding-bottom: 1%;;
     text-align: right;
   }
   td:before { 
