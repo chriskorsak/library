@@ -11,6 +11,9 @@ if(!localStorage.getItem('library')) {
 //global DOM variables
 const bookListTable = document.getElementById('bookList');
 const newBookForm = document.getElementById('newBookForm');
+const totalBooks = document.getElementById('totalBooks');
+const totalRead = document.getElementById('totalRead');
+const totalUnread = document.getElementById('totalUnread');
 
 //submit form event listener
 newBookForm.addEventListener('submit', addBookToMyLibrary);
@@ -64,6 +67,8 @@ function addBookToMyLibrary(e) {
   myLibrary.push(newBook);
   //save library to local storage
   addToLocalStorage();
+  //update totals in header
+  bookTotals();
 
   //get array index val of new book for data-id val in DOM
   const index = myLibrary.length - 1;
@@ -136,11 +141,12 @@ function changeReadStatus(e) {
   setButtonColor(e.target);
   //save to local storage
   addToLocalStorage();
+  //update totals in header
+  bookTotals();
 }
 
 function setButtonColor(button) {
   //set button color
-  console.log(button);
   if (button.textContent === 'Unread') {
     button.classList.add('read-status-button');
   } else {
@@ -156,6 +162,8 @@ function deleteBook(e) {
   myLibrary.splice(id, 1);
   // save to local storage
   addToLocalStorage();
+  //update totals in header
+  bookTotals();
   //remove table row from dom
   populateBookList();
 }
@@ -168,6 +176,28 @@ function pullFromLocalStorage() {
   myLibrary = JSON.parse(localStorage.getItem('library'));
 }
 
+function bookTotals() {
+  //book totals in object
+  const totals = {
+    total: myLibrary.length,
+    read: myLibrary.filter(function(book) {
+      if (book.status === true) {
+        return true;
+      }
+    }).length,
+    unread: myLibrary.filter(function(book) {
+      if (book.status === false) {
+        return true;
+      }
+    }).length
+  }
+  //update dom with totals
+  totalBooks.textContent = totals.total;
+  totalRead.textContent = totals.read;
+  totalUnread.textContent = totals.unread;
+}
+
 //run functions on initial page load
+bookTotals();
 populateBookList();
 
