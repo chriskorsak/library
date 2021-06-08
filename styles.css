@@ -46,9 +46,15 @@ main {
 /* element styles */
 h1 {
   font-size: 3em;
+  text-transform: capitalize;
+  letter-spacing: .1em;
 }
 
 /* new book form styles begin */
+form {
+  border: solid 1px var(--accent-color-2);
+  border-radius: 5px;
+}
 
 #newBookForm {
   margin-bottom: 30px;
@@ -95,21 +101,68 @@ input[type=submit]:hover {
 
 /* book-list table styles start */
 
-table {
-  width: 100%;
+tr {
+  margin-bottom: 30px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--accent-color-2);
+  border-collapse: collapse;
 }
-thead {
-  margin-bottom: 10px;
-}
-
-th {
-  text-align: left;
-}
-
 
 button {
   padding: 5px;
   border-radius: 5px;
+  background-color: var(--main-color);
+  color: var(--text-color-light);
+  border: 1px solid #444;
+  min-width: 70px;
+  margin-bottom: 5px;
+
 }
 
 /* book-list table styles end */
+
+
+/* media queries  */
+@media screen and (min-width: 800px) {
+  form {
+    max-width: 70%;
+  }
+  table {
+    width: 70%;
+  }
+  th {
+    text-align: left;
+    padding-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  table, thead, tbody, th, td, tr { 
+    display: block; 
+  }
+  thead tr { 
+    /* move table head outside of screen */
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  td { 
+    /* Behave  like a "row" */
+    position: relative !important;
+    padding-left: 25% !important;
+    text-align: right;
+  }
+  td:before { 
+    /* Acts like the table header */
+    position: absolute;
+    left: 0px;
+    padding-right: 10px; 
+    font-weight: 600;
+  }
+  
+  td:nth-of-type(1):before { content: "Title"; }
+  td:nth-of-type(2):before { content: "Author"; }
+  td:nth-of-type(3):before { content: "Pages"; }
+  td:nth-of-type(4):before { content: "Read Status"; }
+}

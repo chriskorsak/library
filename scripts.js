@@ -27,9 +27,9 @@ function Book(title, author, pages, status) {
 //Book prototype object method to be shared with all Book objects
 //turns read-status boolean into user-friendly message
 Book.prototype.info = function() {
-  let readStatus = 'not read yet';
+  let readStatus = 'Unread';
   if (this.status) {
-    readStatus = 'read'
+    readStatus = 'Read'
   }
   return readStatus;
 }
